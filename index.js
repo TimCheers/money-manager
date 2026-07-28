@@ -2,6 +2,21 @@ import express from "express";
 
 const app = express();
 
+app.use(express.json());
+
+let transactions = [];
+
+app.post("/transactions", (req, res) => {
+  const { amount, category } = req.body;
+  const transaction = { id: Date.now(), amount, category };
+  transactions.push(transaction);
+  res.status(201).json(transaction);
+});
+
+app.get("/transactions", (req, res) => {
+  res.json(transactions);
+});
+
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });
