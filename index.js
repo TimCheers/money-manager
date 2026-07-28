@@ -1,20 +1,23 @@
-import http from "http";
+import express from "express";
 
-const server = http.createServer((req, res) => {
-    if (req.method === "GET" && req.url === "/") {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ message: "Hello, World!" }));
-        return;
-    }
-    if (req.method === "GET" && req.url === "/ping") {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ status: "ok" }));
-        return;
-    }
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ error: "Not Found" }));
+const app = express();
+
+app.get("/", (req, res) => {
+  res.json({ message: "Hello, World!" });
 });
 
-server.listen(3000, () => {
-    console.log("Server running on port 3000");
+app.get("/ping", (req, res) => {
+  res.json({ status: "ok" });
+});
+
+app.get("/about", (req, res) => {
+  res.json({ status: "about page" });
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Not Found" });
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
 });
