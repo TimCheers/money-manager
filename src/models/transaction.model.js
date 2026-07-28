@@ -1,13 +1,21 @@
-let transactions = [];
+import mongoose from "mongoose";
 
-function getAll() {
-    return transactions;
-}
+const transactionSchema = new mongoose.Schema(
+    {
+        amount: {
+            type: Number,
+            required: true,
+        },
+        category: {
+            type: String,
+            required: true,
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
 
-function create({ amount, category }) {
-    const transaction = { id: Date.now(), amount, category };
-    transactions.push(transaction);
-    return transaction;
-}
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
-export default { getAll, create };
+export default Transaction;
