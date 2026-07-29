@@ -2,7 +2,7 @@ import Transaction from "../models/transaction.model.js";
 
 async function getAllTransactions(req, res) {
     try {
-        const transactions = await Transaction.find().populate("category");
+        const transactions = await Transaction.find().populate("category").populate("account");
         res.json(transactions);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -11,8 +11,8 @@ async function getAllTransactions(req, res) {
 
 async function createTransaction(req, res) {
     try {
-        const { amount, category } = req.body;
-        const transaction = await Transaction.create({ amount, category });
+        const { amount, category, account } = req.body;
+        const transaction = await Transaction.create({ amount, category, account });
         res.status(201).json(transaction);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -22,11 +22,11 @@ async function createTransaction(req, res) {
 async function updateTransaction(req, res) {
     try {
         const { id } = req.params;
-        const { amount, category } = req.body;
+        const { amount, category, account } = req.body;
 
         const updated = await Transaction.findByIdAndUpdate(
             id,
-            { amount, category },
+            { amount, category, account },
             { new: true, runValidators: true }
         );
 
