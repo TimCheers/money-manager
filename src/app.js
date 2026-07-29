@@ -1,11 +1,13 @@
 import express from "express";
 import transactionsRoutes from "./routes/transactions.routes.js";
+import categoryRoutes from "./routes/categories.routes.js";
 import miscRoutes from "./routes/misc.routes.js";
 
 const app = express();
 
 app.use(express.json());
 app.use("/transactions", transactionsRoutes);
+app.use("/categories", categoryRoutes);
 app.use("/", miscRoutes);
 
 app.use((req, res) => {
