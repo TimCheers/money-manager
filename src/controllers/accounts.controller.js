@@ -2,7 +2,7 @@ import Account from "../models/account.model.js";
 
 async function getAllAccounts(req, res) {
     try {
-        const accounts = await Account.find();
+        const accounts = await Account.find({ user: req.user.userId });
         res.json(accounts);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -12,7 +12,7 @@ async function getAllAccounts(req, res) {
 async function createAccount(req, res) {
     try {
         const { title, balance } = req.body;
-        const account = await Account.create({ title, balance });
+        const account = await Account.create({ title, balance, user: req.user.userId });
         res.status(201).json(account);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -23,8 +23,8 @@ async function updateAccount(req, res) {
     try {
         const { id } = req.params;
         const { title, balance } = req.body;
-        const updated = await Account.findByIdAndUpdate(
-            id,
+        const updated = await Account.findOneAndUpdate(
+            {_id: id, user: req.user.userId },
             { title, balance },
             { new: true, runValidators: true }
         );
@@ -42,7 +42,7 @@ async function updateAccount(req, res) {
 async function deleteAccount(req, res) {
     try {
         const { id } = req.params;
-        const deleted = await Account.findByIdAndDelete(id);
+        const deleted = await Account.findOneAndDelete({_id: id, user: req.user.userId });
 
         if (!deleted) {
             return res.status(404).json({ error: "Account not found" });
