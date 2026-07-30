@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import TransactionItem from "./components/TransactionItem.jsx"
 
 function App() {
   const [count, setCount] = useState(0)
@@ -8,13 +9,8 @@ function App() {
     <>
       <section id="center">
         <h1>Money Manager </h1>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+        <TransactionItem amount={500} category="Food" date="2026-07-29" />
+        <TransactionItem amount={1000} category="Tax" date="2026-07-30" />
       </section>
     </>
   )
