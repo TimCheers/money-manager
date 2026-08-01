@@ -3,7 +3,7 @@ import transactionsController from "../controllers/transactions.controller.js";
 import requireJWT from "../middleware/auth.middleware.js";
 
 const router = Router();
-//router.use(requireJWT);
+router.use(requireJWT);
 
 router.get("/", transactionsController.getAllTransactions);
 router.post("/", transactionsController.createTransaction);
