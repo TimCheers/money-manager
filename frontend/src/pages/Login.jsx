@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { token, setToken } = useAuth();
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -20,7 +22,7 @@ function Login() {
                 return;
             }
 
-            console.log("Успех:", data);
+            setToken(data.token);
         } catch (error) {
             console.error("Сетевая ошибка:", error);
         }
