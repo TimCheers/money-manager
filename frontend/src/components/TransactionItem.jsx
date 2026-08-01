@@ -1,9 +1,9 @@
-function TransactionItem({ amount, category, date }) {
+function TransactionItem({ amount, category, account }) {
   return (
     <div>
       <p>{amount}</p>
       <p>{category}</p>
-      <p>{date}</p>
+      <p>{account}</p>
     </div>
   );
 }
