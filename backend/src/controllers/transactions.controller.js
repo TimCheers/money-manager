@@ -2,7 +2,7 @@ import Transaction from "../models/transaction.model.js";
 
 async function getAllTransactions(req, res) {
     try {
-        const transactions = await Transaction.find({ user: req.user.userId }).populate("category").populate("account");
+        const transactions = await Transaction.find(/* { user: req.user.userId } */).populate("category").populate("account");
         res.json(transactions);
     } catch (error) {
         res.status(500).json({ error: error.message });
