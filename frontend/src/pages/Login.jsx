@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { token, setToken } = useAuth();
+    const navigate = useNavigate();
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -23,6 +25,7 @@ function Login() {
             }
 
             setToken(data.token);
+            navigate("/");
         } catch (error) {
             console.error("Сетевая ошибка:", error);
         }
