@@ -9,6 +9,15 @@ async function getAllTransactions(req, res) {
     }
 }
 
+async function getAllTransactionsAdmin(req, res) {
+    try {
+        const transactions = await Transaction.find().populate("category").populate("account").populate("tags").populate("user", "-password");
+        res.json(transactions);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 async function createTransaction(req, res) {
     try {
         const { amount, category, account, tags } = req.body;
@@ -57,6 +66,7 @@ async function deleteTransaction(req, res) {
 
 export default {
     getAllTransactions,
+    getAllTransactionsAdmin,
     createTransaction,
     updateTransaction,
     deleteTransaction,

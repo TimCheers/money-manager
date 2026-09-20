@@ -1,9 +1,9 @@
 import { Router } from "express";
-import requireJWT from "../middleware/auth.middleware.js";
+import authMiddleware  from "../middleware/auth.middleware.js";
 import tagController from "../controllers/tag.controller.js";
 
 const router = Router();
-router.use(requireJWT);
+router.use(authMiddleware.requireJWT);
 
 router.get("/", tagController.getAllTags);
 router.post("/", tagController.createTag);
