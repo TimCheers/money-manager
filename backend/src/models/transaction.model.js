@@ -21,6 +21,12 @@ const transactionSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        tags: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Tag",
+            }
+        ],
     },
     {
         timestamps: true,

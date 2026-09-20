@@ -2,7 +2,7 @@ import Transaction from "../models/transaction.model.js";
 
 async function getAllTransactions(req, res) {
     try {
-        const transactions = await Transaction.find({ user: req.user.userId }).populate("category").populate("account");
+        const transactions = await Transaction.find({ user: req.user.userId }).populate("category").populate("account").populate("tags");
         res.json(transactions);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -11,8 +11,8 @@ async function getAllTransactions(req, res) {
 
 async function createTransaction(req, res) {
     try {
-        const { amount, category, account } = req.body;
-        const transaction = await Transaction.create({ amount, category, account, user: req.user.userId  });
+        const { amount, category, account, tags } = req.body;
+        const transaction = await Transaction.create({ amount, category, account, tags, user: req.user.userId  });
         res.status(201).json(transaction);
     } catch (error) {
         res.status(400).json({ error: error.message });
