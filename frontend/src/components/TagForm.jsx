@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 
-function AccountForm({ onAccountCreated }) {
+function TagForm({ onTagCreated }) {
     const { token } = useAuth();
     const [title, setTitle] = useState("");
-    const [balance, setBalance] = useState("");
+    const [color, setColor] = useState("");
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:3000/accounts", {
+            const response = await fetch("http://localhost:3000/tags", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ title, balance }),
+                body: JSON.stringify({ title, color }),
             });
 
             const data = await response.json();
@@ -24,9 +24,9 @@ function AccountForm({ onAccountCreated }) {
                 return;
             }
 
-            onAccountCreated(data);
+            onTagCreated(data);
             setTitle("");
-            setBalance("");
+            setColor("");
         } catch (error) {
             console.error("Сетевая ошибка:", error);
         }
@@ -39,13 +39,13 @@ function AccountForm({ onAccountCreated }) {
                     type="text"
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
-                    placeholder="Название счета"
+                    placeholder="Название тега"
                 />
-                <input
-                    type="number"
-                    value={balance}
-                    onChange={(event) => setBalance(event.target.value)}
-                    placeholder="Баланс"
+                <input //пока ввиде текста, потом переделаю под цветовой код
+                    type="text"
+                    value={color}
+                    onChange={(event) => setColor(event.target.value)}
+                    placeholder="Цвет" 
                 />
                 <button type="submit">Добавить</button>
             </form>
@@ -53,4 +53,4 @@ function AccountForm({ onAccountCreated }) {
     )
 }
 
-export default AccountForm;
+export default TagForm;
