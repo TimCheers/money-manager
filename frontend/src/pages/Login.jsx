@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { token, setToken } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
@@ -24,7 +24,7 @@ function Login() {
                 return;
             }
 
-            setToken(data.token);
+            login(data.token);
             navigate("/");
         } catch (error) {
             console.error("Сетевая ошибка:", error);
