@@ -34,20 +34,24 @@ function AccountForm({ onAccountCreated }) {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
                 <input
                     type="text"
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
                     placeholder="Название счета"
+                    className="flex-1 px-3 py-2 rounded bg-gray-800 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
                 />
                 <input
                     type="number"
                     value={balance}
                     onChange={(event) => setBalance(event.target.value)}
                     placeholder="Баланс"
+                    className="w-32 px-3 py-2 rounded bg-gray-800 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
                 />
-                <button type="submit">Добавить</button>
+                <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition font-medium">
+                    Добавить
+                </button>
             </form>
         </>
     )

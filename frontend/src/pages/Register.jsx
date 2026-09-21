@@ -47,29 +47,40 @@ function Register() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-      />
-      <input
-        type="date"
-        value={dateOfBirth}
-        onChange={(event) => setDateOfBirth(event.target.value)}
-      />
+    <form onSubmit={handleSubmit} className="max-w-sm mx-auto mt-12 p-6 rounded-lg bg-gray-800 border border-gray-700 flex flex-col gap-3">
       <input
         type="text"
         value={email}
         onChange={(event) => setEmail(event.target.value)}
+        placeholder="Email"
+        className="px-3 py-2 rounded bg-gray-900 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
       />
       <input
         type="password"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
+        placeholder="Пароль"
+        className="px-3 py-2 rounded bg-gray-900 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
       />
-      <button type="submit">Ввод</button>
+      <input
+        type="text"
+        value={username}
+        onChange={(event) => setUsername(event.target.value)}
+        placeholder="Имя пользователя"
+        className="px-3 py-2 rounded bg-gray-900 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
+      />
+      <input
+        type="date"
+        value={dateOfBirth}
+        onChange={(event) => setDateOfBirth(event.target.value)}
+        className="px-3 py-2 rounded bg-gray-900 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
+      />
+      <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition font-medium">
+        Ввод
+      </button>
     </form>
+
+
   );
 }
 

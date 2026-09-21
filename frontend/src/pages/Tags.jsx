@@ -25,7 +25,7 @@ function Tags() {
             <div>
                 <TagForm onTagCreated={handleTagCreated} />
                 <section id="center">
-                    <h1>Tags</h1>
+                    <h1 className="text-2xl font-bold mb-6">Tags</h1>
                     {tags.map((tag) => (
                         <TagItem key={tag._id} title={tag.title} color={tag.color} />
                     ))}

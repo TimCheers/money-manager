@@ -12,24 +12,26 @@ function Layout() {
     }
 
     return (
-        <div>
-            <nav>
+        <div className="min-h-screen bg-gray-900 text-gray-100">
+            <nav className="flex items-center gap-6 px-6 py-4 bg-gray-800 border-b border-gray-700">
                 {!token && (
                     <>
-                        <Link to="/login">Логин</Link>
-                        <Link to="/register">Регистрация</Link>
+                        <Link to="/login" className="hover:text-blue-400 transition">Логин</Link>
+                        <Link to="/register" className="hover:text-blue-400 transition">Регистрация</Link>
                     </>
                 )}
                 {token && (
                     <>
-                        <Link to="/">Главная</Link>
-                        <Link to="/accounts">Счета</Link>
-                        <Link to="/tags">Теги</Link>
-                        <button onClick={handleLogout}>Выйти</button>
+                        <Link to="/" className="hover:text-blue-400 transition">Главная</Link>
+                        <Link to="/accounts" className="hover:text-blue-400 transition">Счета</Link>
+                        <Link to="/tags" className="hover:text-blue-400 transition">Теги</Link>
+                        <button onClick={handleLogout} className="ml-auto px-4 py-1.5 rounded bg-red-600 hover:bg-red-700 transition text-sm">
+                            Выйти
+                        </button>
                     </>
                 )}
             </nav>
-            <main>
+            <main className="max-w-3xl mx-auto p-6">
                 <Outlet />
             </main>
         </div>

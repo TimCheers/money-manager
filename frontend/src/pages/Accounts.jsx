@@ -25,7 +25,7 @@ function Accounts() {
             <div>
                 <AccountForm onAccountCreated={handleAccountCreated} />
                 <section id="center">
-                    <h1>Accounts</h1>
+                    <h1 className="text-2xl font-bold mb-6">Accounts</h1>
                     {accounts.map((account) => (
                         <AccountItem key={account._id} title={account.title} balance={account.balance} />
                     ))}
