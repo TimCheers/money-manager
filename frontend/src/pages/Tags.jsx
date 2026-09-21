@@ -7,6 +7,7 @@ function Tags() {
     const { token } = useAuth();
     const [tags, setTags] = useState([]);
     useEffect(() => {
+        if (!token) return;
         fetch("http://localhost:3000/tags", {
             headers: { Authorization: `Bearer ${token}` },
         })

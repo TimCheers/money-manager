@@ -7,6 +7,7 @@ function Accounts() {
     const { token } = useAuth();
     const [accounts, setAccounts] = useState([]);
     useEffect(() => {
+        if (!token) return;
         fetch("http://localhost:3000/accounts", {
             headers: { Authorization: `Bearer ${token}` },
         })

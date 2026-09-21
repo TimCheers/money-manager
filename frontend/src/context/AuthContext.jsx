@@ -9,9 +9,13 @@ export function AuthProvider({ children }) {
     setToken(newToken);
     localStorage.setItem("token", newToken);
   }
+  function logout() {
+    setToken(null);
+    localStorage.removeItem("token");
+  }
 
   return (
-    <AuthContext.Provider value={{ token, login }}>
+    <AuthContext.Provider value={{ token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

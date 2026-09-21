@@ -6,6 +6,7 @@ function Dashboard() {
   const { token } = useAuth();
   const [transactions, setTransactions] = useState([])
   useEffect(() => {
+    if (!token) return;
     fetch("http://localhost:3000/transactions", {
       headers: { Authorization: `Bearer ${token}` },
     })
