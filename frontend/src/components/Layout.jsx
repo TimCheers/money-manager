@@ -25,7 +25,7 @@ function Layout() {
                         <Link to="/" className="hover:text-blue-400 transition">Главная</Link>
                         <Link to="/accounts" className="hover:text-blue-400 transition">Счета</Link>
                         <Link to="/tags" className="hover:text-blue-400 transition">Теги</Link>
-                        <button onClick={handleLogout} className="ml-auto px-4 py-1.5 rounded bg-red-600 hover:bg-red-700 transition text-sm">
+                        <button onClick={handleLogout} className="ml-auto px-4 py-1.5 rounded bg-blue-600 hover:bg-red-700 transition text-sm">
                             Выйти
                         </button>
                     </>

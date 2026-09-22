@@ -1,4 +1,6 @@
 import Transaction from "../models/transaction.model.js";
+import Category from "../models/category.model.js";
+import Account from "../models/account.model.js";
 
 async function getAllTransactions(req, res) {
     try {
@@ -21,7 +23,16 @@ async function getAllTransactionsAdmin(req, res) {
 async function createTransaction(req, res) {
     try {
         const { amount, category, account, tags } = req.body;
-        const transaction = await Transaction.create({ amount, category, account, tags, user: req.user.userId  });
+        const categoryDoc = await Category.findById(category);
+        let delta;
+        if (categoryDoc.type === "Expense") {
+            delta = -1 * amount;
+        }
+        else {
+            delta = amount;
+        }
+        const transaction = await Transaction.create({ amount, category, account, tags, user: req.user.userId });
+        await Account.findByIdAndUpdate(account, { $inc: { balance: delta } });
         res.status(201).json(transaction);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -34,7 +45,7 @@ async function updateTransaction(req, res) {
         const { amount, category, account } = req.body;
 
         const updated = await Transaction.findOneAndUpdate(
-            {_id: id, user: req.user.userId },
+            { _id: id, user: req.user.userId },
             { amount, category, account },
             { new: true, runValidators: true }
         );
@@ -52,7 +63,7 @@ async function updateTransaction(req, res) {
 async function deleteTransaction(req, res) {
     try {
         const { id } = req.params;
-        const deleted = await Transaction.findOneAndDelete({_id: id, user: req.user.userId });
+        const deleted = await Transaction.findOneAndDelete({ _id: id, user: req.user.userId });
 
         if (!deleted) {
             return res.status(404).json({ error: "Transaction not found" });
