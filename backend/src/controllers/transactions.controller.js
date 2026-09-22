@@ -68,7 +68,15 @@ async function deleteTransaction(req, res) {
         if (!deleted) {
             return res.status(404).json({ error: "Transaction not found" });
         }
-
+        const categoryDoc = await Category.findById(deleted.category);
+        let delta;
+        if (categoryDoc.type === "Income") {
+            delta = -1 * deleted.amount;
+        }
+        else {
+            delta = deleted.amount;
+        }
+        await Account.findByIdAndUpdate(deleted.account, { $inc: { balance: delta } });
         res.json({ message: "Transaction deleted", deleted });
     } catch (error) {
         res.status(500).json({ error: error.message });
