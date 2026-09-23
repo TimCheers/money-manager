@@ -34,6 +34,7 @@ async function createTransaction(req, res) {
         const transaction = await Transaction.create({ amount, category, account, tags, user: req.user.userId });
         await transaction.populate("category");
         await transaction.populate("account");
+        await transaction.populate("tags");
         await Account.findByIdAndUpdate(account, { $inc: { balance: delta } });
         res.status(201).json(transaction);
     } catch (error) {
@@ -85,6 +86,7 @@ async function updateTransaction(req, res) {
 
         await updated.populate("category");
         await updated.populate("account");
+        await updated.populate("tags");
         res.json(updated);
     } catch (error) {
         res.status(400).json({ error: error.message });

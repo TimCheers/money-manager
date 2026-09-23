@@ -8,6 +8,8 @@ function TransactionForm({ existingTransaction, onSaved }) {
     const [account, setAccount] = useState(existingTransaction?.account?._id || "");
     const [categories, setCategories] = useState([]);
     const [accounts, setAccounts] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
 
     useEffect(() => {
         if (!token) return;
@@ -24,6 +26,13 @@ function TransactionForm({ existingTransaction, onSaved }) {
             .then((res) => res.json())
             .then((data) => setAccounts(data))
             .catch((error) => console.error("Failed to fetch accounts:", error));
+
+        fetch("http://localhost:3000/tags", {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((res) => res.json())
+            .then((data) => setTags(data))
+            .catch((error) => console.error("Failed to fetch tegs:", error));
     }, [token]);
 
     useEffect(() => {
@@ -48,7 +57,7 @@ function TransactionForm({ existingTransaction, onSaved }) {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ amount, category, account }),
+                body: JSON.stringify({ amount, category, account, tags: selectedTags }),
             });
 
             const data = await response.json();
@@ -62,11 +71,16 @@ function TransactionForm({ existingTransaction, onSaved }) {
             setAmount("");
             setCategory("");
             setAccount("");
+            setSelectedTags([]);
         } catch (error) {
             console.error("Сетевая ошибка:", error);
         }
     }
-
+    function toggleTag(id) {
+        setSelectedTags((prev) =>
+            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+        );
+    }
     return (
         <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
             <input
@@ -96,6 +110,19 @@ function TransactionForm({ existingTransaction, onSaved }) {
                     <option key={acc._id} value={acc._id}>{acc.title}</option>
                 ))}
             </select>
+            <div>
+                {tags.map((tag) => (
+                    <label key={tag._id} className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={selectedTags.includes(tag._id)}
+                            onChange={() => toggleTag(tag._id)}
+                        />
+                        {tag.title}
+                    </label>
+                ))}
+            </div>
+
             <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition font-medium">
                 Добавить
             </button>
