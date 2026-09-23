@@ -21,12 +21,38 @@ function Dashboard() {
     setTransactions((prev) => [...prev, newTransaction]);
   }
 
+  async function handleDelete(id) {
+    try {
+      const response = await fetch(`http://localhost:3000/transactions/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Ошибка:", data.error);
+        return;
+      }
+
+      setTransactions((prev) => prev.filter((t) => t._id !== id));
+    } catch (error) {
+      console.error("Сетевая ошибка:", error);
+    }
+
+  }
+
   return (
     <>
       <h1 className="text-2xl font-bold mb-6">Money Manager</h1>
       <TransactionForm onTransactionCreated={handleTransactionCreated} />
       {transactions.map((transaction) => (
         <TransactionItem
+          id={transaction._id}
+          onDelete={handleDelete}
           key={transaction._id}
           amount={transaction.amount}
           category={transaction.category.title}
