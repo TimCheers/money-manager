@@ -40,6 +40,7 @@ function TransactionForm({ existingTransaction, onSaved }) {
             setAmount(existingTransaction.amount);
             setCategory(existingTransaction.category._id);
             setAccount(existingTransaction.account._id);
+            setSelectedTags(existingTransaction.tags.map((tag) => tag._id));
         }
     }, [existingTransaction]);
 
