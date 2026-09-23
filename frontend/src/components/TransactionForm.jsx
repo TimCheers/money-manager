@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 
-function TransactionForm({ onTransactionCreated }) {
+function TransactionForm({ existingTransaction, onSaved }) {
     const { token } = useAuth();
-    const [amount, setAmount] = useState("");
-    const [category, setCategory] = useState("");
-    const [account, setAccount] = useState("");
+    const [amount, setAmount] = useState(existingTransaction?.amount || "");
+    const [category, setCategory] = useState(existingTransaction?.category?._id || "");
+    const [account, setAccount] = useState(existingTransaction?.account?._id || "");
     const [categories, setCategories] = useState([]);
     const [accounts, setAccounts] = useState([]);
 
@@ -26,11 +26,24 @@ function TransactionForm({ onTransactionCreated }) {
             .catch((error) => console.error("Failed to fetch accounts:", error));
     }, [token]);
 
+    useEffect(() => {
+        if (existingTransaction) {
+            setAmount(existingTransaction.amount);
+            setCategory(existingTransaction.category._id);
+            setAccount(existingTransaction.account._id);
+        }
+    }, [existingTransaction]);
+
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:3000/transactions", {
-                method: "POST",
+            const isEditing = Boolean(existingTransaction);
+            const url = isEditing
+                ? `http://localhost:3000/transactions/${existingTransaction._id}`
+                : "http://localhost:3000/transactions";
+            const method = isEditing ? "PUT" : "POST";
+            const response = await fetch(url, {
+                method,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -45,7 +58,7 @@ function TransactionForm({ onTransactionCreated }) {
                 return;
             }
 
-            onTransactionCreated(data);
+            onSaved(data);
             setAmount("");
             setCategory("");
             setAccount("");

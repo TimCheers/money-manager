@@ -83,6 +83,8 @@ async function updateTransaction(req, res) {
         const newAccountId = account || oldTransaction.account;
         await Account.findByIdAndUpdate(newAccountId, { $inc: { balance: newDelta } });
 
+        await updated.populate("category");
+        await updated.populate("account");
         res.json(updated);
     } catch (error) {
         res.status(400).json({ error: error.message });

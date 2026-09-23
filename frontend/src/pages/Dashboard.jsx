@@ -5,7 +5,8 @@ import { useAuth } from "../context/AuthContext.jsx";
 
 function Dashboard() {
   const { token } = useAuth();
-  const [transactions, setTransactions] = useState([])
+  const [transactions, setTransactions] = useState([]);
+  const [editingTransaction, setEditingTransaction] = useState(null);
 
   useEffect(() => {
     if (!token) return;
@@ -17,8 +18,10 @@ function Dashboard() {
       .catch((error) => console.error("Failed to fetch transactions:", error));
   }, [token]);
 
-  function handleTransactionCreated(newTransaction) {
-    setTransactions((prev) => [...prev, newTransaction]);
+  function onSaved(newTransaction) {
+    if (transactions.some((t) => t._id === newTransaction._id))
+      setTransactions((prev) => prev.map((t) => (t._id === newTransaction._id ? newTransaction : t)));
+    else setTransactions((prev) => [...prev, newTransaction]);
   }
 
   async function handleDelete(id) {
@@ -44,15 +47,23 @@ function Dashboard() {
     }
 
   }
+  function handleEdit(id) {
+    const transaction = transactions.find((t) => t._id === id);
+    setEditingTransaction(transaction);
+  }
 
   return (
     <>
       <h1 className="text-2xl font-bold mb-6">Money Manager</h1>
-      <TransactionForm onTransactionCreated={handleTransactionCreated} />
+      <TransactionForm
+        onSaved={onSaved}
+        existingTransaction={editingTransaction}
+      />
       {transactions.map((transaction) => (
         <TransactionItem
           id={transaction._id}
           onDelete={handleDelete}
+          onEdit={handleEdit}
           key={transaction._id}
           amount={transaction.amount}
           category={transaction.category.title}
