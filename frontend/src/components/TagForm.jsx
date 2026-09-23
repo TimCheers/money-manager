@@ -43,9 +43,9 @@ function TagForm({ onTagCreated }) {
                     className="flex-1 px-3 py-2 rounded bg-gray-800 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
                 />
                 <input
-                    type="number"
+                    type="text"
                     value={color}
-                    onChange={(event) => setBalance(event.target.value)}
+                    onChange={(event) => setColor(event.target.value)}
                     placeholder="Цвет"
                     className="w-32 px-3 py-2 rounded bg-gray-800 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
                 />

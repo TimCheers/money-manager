@@ -32,6 +32,8 @@ async function createTransaction(req, res) {
             delta = amount;
         }
         const transaction = await Transaction.create({ amount, category, account, tags, user: req.user.userId });
+        await transaction.populate("category");
+        await transaction.populate("account");
         await Account.findByIdAndUpdate(account, { $inc: { balance: delta } });
         res.status(201).json(transaction);
     } catch (error) {
@@ -44,15 +46,42 @@ async function updateTransaction(req, res) {
         const { id } = req.params;
         const { amount, category, account } = req.body;
 
+        const oldTransaction = await Transaction.findOne({ _id: id, user: req.user.userId });
+        if (!oldTransaction) {
+            return res.status(404).json({ error: "Transaction not found" });
+        }
+        const categoryDoc = await Category.findById(oldTransaction.category);
+        let oldDelta;
+        if (categoryDoc.type === "Income") {
+            oldDelta = -1 * oldTransaction.amount;
+        }
+        else {
+            oldDelta = oldTransaction.amount;
+        }
+        await Account.findByIdAndUpdate(oldTransaction.account, { $inc: { balance: oldDelta } });
+
         const updated = await Transaction.findOneAndUpdate(
             { _id: id, user: req.user.userId },
             { amount, category, account },
             { new: true, runValidators: true }
         );
-
         if (!updated) {
             return res.status(404).json({ error: "Transaction not found" });
         }
+
+        const newCategoryId = category || oldTransaction.category;
+        const newCategoryDoc = await Category.findById(newCategoryId);
+
+        let newDelta;
+        const newAmount = amount ?? oldTransaction.amount;
+        if (newCategoryDoc.type === "Expense") {
+            newDelta = -1 * newAmount;
+        } else {
+            newDelta = newAmount;
+        }
+
+        const newAccountId = account || oldTransaction.account;
+        await Account.findByIdAndUpdate(newAccountId, { $inc: { balance: newDelta } });
 
         res.json(updated);
     } catch (error) {
