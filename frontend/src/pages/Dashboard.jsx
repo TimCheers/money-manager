@@ -68,6 +68,7 @@ function Dashboard() {
           amount={transaction.amount}
           category={transaction.category.title}
           account={transaction.account.title}
+          tags={transaction.tags}
         />
       ))}
     </>
